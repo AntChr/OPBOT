@@ -197,7 +197,7 @@ function App() {
                         onLogout={handleLogout}
                         onShowAdmin={() => setShowAdmin(true)}
                         onReset={handleResetConversation}
-                        showResetButton={true}
+                        showResetButton={user?.role === 'admin'}
                         showBotAvatar={true}
                         title="Assistant d'Orientation"
                       />

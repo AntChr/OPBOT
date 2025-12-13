@@ -146,7 +146,7 @@ const ActionPlan = ({ conversation, user, onLogout, onShowAdmin, onRestart }) =>
         onLogout={onLogout}
         onShowAdmin={onShowAdmin}
         showAdminButton={true}
-        showResetButton={true}
+        showResetButton={user?.role === 'admin'}
         onReset={onRestart}
         title="📋 Votre Plan d'Action"
       />
