@@ -3,8 +3,8 @@
  * Utilise les variables d'environnement Vite
  */
 
-// @ts-ignore - __API_URL__ is defined by Vite at build time
-export const API_URL = typeof __API_URL__ !== 'undefined' ? __API_URL__ : (import.meta.env.VITE_API_URL || 'http://localhost:5000');
+// TEMPORARY: Hard-coded for testing
+export const API_URL = 'https://opbot-production.up.railway.app';
 
 /**
  * Endpoints de l'API
