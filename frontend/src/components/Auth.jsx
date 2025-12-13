@@ -150,10 +150,10 @@ const Auth = ({ onLogin }) => {
               onChange={handleChange}
               placeholder="Saisissez votre mot de passe"
               required
-              minLength="6"
+              minLength="8"
             />
             {!isLogin && (
-              <span className="form-help">Minimum 6 caractères</span>
+              <span className="form-help">Minimum 8 caractères</span>
             )}
           </div>
 

@@ -11,6 +11,9 @@ const app = express();
 // Security headers
 app.use(helmet());
 
+// Trust proxy for Railway deployment (needed for rate limiting)
+app.set('trust proxy', 1);
+
 // CORS configuration - restrictive
 const corsOptions = {
   origin: process.env.FRONTEND_URL || 'http://localhost:5173',

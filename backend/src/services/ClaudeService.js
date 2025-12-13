@@ -352,7 +352,7 @@ VÉRIFIE que chaque "jobId" existe dans la liste JSON des métiers fournie.`;
 
     if (bp.detectedTraits && Object.keys(bp.detectedTraits).length > 0) {
       const traits = Object.entries(bp.detectedTraits)
-        .filter(([_, data]) => data.score > 0)
+        .filter(([_, data]) => data && data.score > 0)
         .slice(0, 5)
         .map(([trait, data]) => `${trait} (${(data.score * 100).toFixed(0)}%)`);
       if (traits.length > 0) {
