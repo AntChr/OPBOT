@@ -112,7 +112,8 @@ const Conclusion = ({ conversation, user, onLogout, onShowAdmin, onRestart }) =>
 
               {/* Motivational quote */}
               <div className={`conclusion-quote ${animationPhase === 'ready' ? 'fade-in-up' : ''}`}>
-                <p>✨ Votre voie est trouvée. Le reste dépend de vous.</p>
+                <p>✨ Votre voie est trouvée.</p>
+                <p>Autrefois, on vous laissait seul avec ce résultat. Aujourd'hui, vous êtes accompagné pour transformer cette vocation en réalité.</p>
               </div>
             </>
           )}

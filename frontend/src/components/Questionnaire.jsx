@@ -128,9 +128,19 @@ const Questionnaire = ({ conversation, user, onLogout, onShowAdmin, onRestart })
               Vos réponses ont été enregistrées avec succès. Elles nous aideront à améliorer l'expérience pour les prochains utilisateurs.
             </p>
             <div className="success-actions">
-              <button className="btn btn-primary" onClick={onRestart}>
-                <i className="fa-solid fa-rotate-right"></i> Recommencer une session
-              </button>
+              <p style={{
+                color: '#666',
+                fontSize: '0.9rem',
+                textAlign: 'center',
+                marginTop: '1.5rem',
+                padding: '1rem',
+                backgroundColor: '#f8f9fa',
+                borderRadius: '8px',
+                borderLeft: '4px solid #007bff'
+              }}>
+                <i className="fa-solid fa-flask"></i> <strong>Phase Alpha</strong><br/>
+                Cette première expérience était un test. Merci d'avoir participé à l'amélioration de notre assistant d'orientation !
+              </p>
             </div>
           </div>
         </div>
