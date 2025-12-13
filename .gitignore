@@ -22,3 +22,8 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# Archive and documentation
+_ARCHIVE/
+*.md
+!README.md
