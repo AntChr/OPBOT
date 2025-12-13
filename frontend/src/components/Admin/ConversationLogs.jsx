@@ -192,6 +192,19 @@ const ConversationLogs = () => {
                     <i className="fa-solid fa-message"></i>
                     <span>{conv.messageCount} messages</span>
                   </div>
+                  {conv.tokens && conv.tokens.total > 0 && (
+                    <div className="info-row">
+                      <i className="fa-solid fa-coins"></i>
+                      <span>
+                        {conv.tokens.total.toLocaleString()} tokens
+                        {conv.cost > 0 && (
+                          <span style={{ color: '#ffa500', marginLeft: '0.5rem', fontWeight: 'bold' }}>
+                            (${conv.cost.toFixed(4)})
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                  )}
                   {conv.jobTitle && (
                     <div className="info-row job-title">
                       <i className="fa-solid fa-briefcase"></i>

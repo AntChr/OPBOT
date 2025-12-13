@@ -181,19 +181,40 @@ router.get('/admin/all', authenticateToken, adminAuth, async (req, res) => {
       .lean();
 
     // Formater les données pour l'admin
-    const formattedConversations = conversations.map(conv => ({
-      _id: conv._id,
-      user: conv.userId,
-      status: conv.status,
-      startedAt: conv.startedAt,
-      completedAt: conv.completedAt,
-      lastActiveAt: conv.lastActiveAt,
-      currentPhase: conv.currentPhase?.name,
-      messageCount: conv.messages?.length || 0,
-      milestones: conv.milestones,
-      quality: conv.quality,
-      jobTitle: conv.milestones?.specific_job_identified?.jobTitle || null
-    }));
+    const formattedConversations = conversations.map(conv => {
+      // Calculer les tokens totaux
+      let totalTokens = { input: 0, output: 0, total: 0 };
+      if (conv.messages && conv.messages.length > 0) {
+        conv.messages.forEach(msg => {
+          if (msg.metadata?.tokensUsed) {
+            totalTokens.input += msg.metadata.tokensUsed.input_tokens || 0;
+            totalTokens.output += msg.metadata.tokensUsed.output_tokens || 0;
+          }
+        });
+        totalTokens.total = totalTokens.input + totalTokens.output;
+      }
+
+      // Calculer le coût (Claude 3.5 Sonnet pricing)
+      const inputCost = (totalTokens.input / 1000000) * 3;  // $3 per million input tokens
+      const outputCost = (totalTokens.output / 1000000) * 15; // $15 per million output tokens
+      const totalCost = inputCost + outputCost;
+
+      return {
+        _id: conv._id,
+        user: conv.userId,
+        status: conv.status,
+        startedAt: conv.startedAt,
+        completedAt: conv.completedAt,
+        lastActiveAt: conv.lastActiveAt,
+        currentPhase: conv.currentPhase?.name,
+        messageCount: conv.messages?.length || 0,
+        milestones: conv.milestones,
+        quality: conv.quality,
+        jobTitle: conv.milestones?.specific_job_identified?.jobTitle || null,
+        tokens: totalTokens,
+        cost: totalCost
+      };
+    });
 
     res.json({
       total: formattedConversations.length,
