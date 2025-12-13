@@ -8,6 +8,6 @@ console.log('🔍 All VITE_ vars:', Object.keys(process.env).filter(k => k.start
 export default defineConfig({
   plugins: [react()],
   define: {
-    'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL || 'http://localhost:5000')
+    __API_URL__: JSON.stringify(process.env.VITE_API_URL || 'http://localhost:5000')
   }
 })

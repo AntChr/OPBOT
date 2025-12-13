@@ -3,7 +3,8 @@
  * Utilise les variables d'environnement Vite
  */
 
-export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+// @ts-ignore - __API_URL__ is defined by Vite at build time
+export const API_URL = typeof __API_URL__ !== 'undefined' ? __API_URL__ : (import.meta.env.VITE_API_URL || 'http://localhost:5000');
 
 /**
  * Endpoints de l'API
