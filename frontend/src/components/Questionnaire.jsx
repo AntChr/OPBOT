@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_ENDPOINTS } from '../config/api';
 import Navbar from './Navbar';
 import './Questionnaire.css';
 
@@ -92,7 +93,7 @@ const Questionnaire = ({ conversation, user, onLogout, onShowAdmin, onRestart })
     setIsSubmitting(true);
 
     try {
-      await axios.post('http://localhost:5000/api/questionnaire', {
+      await axios.post(API_ENDPOINTS.QUESTIONNAIRE_SUBMIT, {
         conversationId: conversation?._id,
         jobTitle,
         ratings: formData.ratings,

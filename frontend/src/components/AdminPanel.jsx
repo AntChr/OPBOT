@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios'
+import { API_ENDPOINTS } from '../config/api'
 import Navbar from './Navbar'
 import JobsList from './Admin/JobsList'
 import QuestionnaireAnalytics from './Admin/QuestionnaireAnalytics'
@@ -57,7 +58,7 @@ function AdminPanel({ onBackToQuiz, user }) {
         tags: jobForm.tags.split(',').map(s => s.trim())
       }
 
-      await axios.post('http://localhost:5000/api/results/create-job', jobData)
+      await axios.post(API_ENDPOINTS.RESULTS_JOBS_CREATE, jobData)
       setMessage('Métier créé avec succès !')
 
       // Reset form
@@ -84,7 +85,7 @@ function AdminPanel({ onBackToQuiz, user }) {
         }))
       }
 
-      await axios.post('http://localhost:5000/api/questions', questionData)
+      await axios.post(API_ENDPOINTS.QUESTIONS_CREATE, questionData)
       setMessage('Question créée avec succès !')
 
       // Reset form
@@ -130,7 +131,7 @@ function AdminPanel({ onBackToQuiz, user }) {
   const fetchAllJobs = async () => {
     try {
       setIsLoadingData(true)
-      const response = await axios.get('http://localhost:5000/api/results/jobs')
+      const response = await axios.get(API_ENDPOINTS.RESULTS_JOBS_LIST)
       setAllJobs(response.data)
     } catch (error) {
       console.error('Erreur lors du chargement des métiers:', error)
@@ -142,7 +143,7 @@ function AdminPanel({ onBackToQuiz, user }) {
   const fetchAllQuestions = async () => {
     try {
       setIsLoadingData(true)
-      const response = await axios.get('http://localhost:5000/api/questions')
+      const response = await axios.get(API_ENDPOINTS.QUESTIONS_LIST)
       setAllQuestions(response.data)
     } catch (error) {
       console.error('Erreur lors du chargement des questions:', error)
@@ -155,7 +156,7 @@ function AdminPanel({ onBackToQuiz, user }) {
     try {
       setIsLoadingData(true)
       const token = localStorage.getItem('token')
-      const response = await axios.get('http://localhost:5000/api/auth/users', {
+      const response = await axios.get(API_ENDPOINTS.ADMIN_USERS, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

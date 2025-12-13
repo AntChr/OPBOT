@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { API_ENDPOINTS } from '../../config/api';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 import '../Chat/Chat.css';
@@ -41,7 +42,7 @@ const ChatInterface = ({ user, onMilestoneComplete, onComplete }) => {
       setError(null);
 
       // Appel réel à l'API backend
-      const response = await axios.post('http://localhost:5000/api/conversations/start', {
+      const response = await axios.post(API_ENDPOINTS.CONVERSATIONS_START, {
         userId: user._id || user.id
       });
 
@@ -101,7 +102,7 @@ const ChatInterface = ({ user, onMilestoneComplete, onComplete }) => {
     try {
       // Appel réel à l'API backend
       const response = await axios.post(
-        `http://localhost:5000/api/conversations/${conversation._id}/messages`,
+        API_ENDPOINTS.CONVERSATIONS_MESSAGES(conversation._id),
         { message: messageText }
       );
 

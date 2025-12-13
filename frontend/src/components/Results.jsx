@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { API_ENDPOINTS } from '../config/api';
 import Navbar from './Navbar';
 
 const Results = ({ results, user, onRestart, onLogout, onShowAdmin }) => {
@@ -11,7 +12,7 @@ const Results = ({ results, user, onRestart, onLogout, onShowAdmin }) => {
 
     setIsResetting(true);
     try {
-      await axios.post('http://localhost:5000/api/conversations/reset', {
+      await axios.post(API_ENDPOINTS.CONVERSATIONS_RESET, {
         userId: user._id || user.id
       });
       onRestart();

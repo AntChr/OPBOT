@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_URL } from '../../config/api';
 
 /**
  * Composant d'administration pour gérer et visualiser les métiers
@@ -21,8 +22,6 @@ const JobsList = () => {
 
   // Détails
   const [selectedJob, setSelectedJob] = useState(null);
-
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   // Charger les données initiales
   useEffect(() => {

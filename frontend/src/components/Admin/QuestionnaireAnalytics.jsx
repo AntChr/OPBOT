@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_ENDPOINTS } from '../../config/api';
 import './QuestionnaireAnalytics.css';
 
 const QuestionnaireAnalytics = () => {
@@ -15,7 +16,7 @@ const QuestionnaireAnalytics = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/questionnaire/analytics', {
+      const response = await axios.get(API_ENDPOINTS.QUESTIONNAIRE_ANALYTICS, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

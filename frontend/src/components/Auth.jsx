@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_ENDPOINTS } from '../config/api';
 import './Auth.css';
 
 const Auth = ({ onLogin }) => {
@@ -30,12 +31,12 @@ const Auth = ({ onLogin }) => {
     setError('');
 
     try {
-      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
+      const endpoint = isLogin ? API_ENDPOINTS.LOGIN : API_ENDPOINTS.REGISTER;
       const payload = isLogin
         ? { email: formData.email, password: formData.password }
         : formData;
 
-      const response = await axios.post(`http://localhost:5000${endpoint}`, payload);
+      const response = await axios.post(endpoint, payload);
 
       if (response.data.success) {
         localStorage.setItem('token', response.data.token);

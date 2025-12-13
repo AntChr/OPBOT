@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_ENDPOINTS } from '../../config/api';
 import './ConversationLogs.css';
 
 const ConversationLogs = () => {
@@ -18,7 +19,7 @@ const ConversationLogs = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/conversations/admin/all', {
+      const response = await axios.get(API_ENDPOINTS.ADMIN_CONVERSATIONS, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setConversations(response.data.conversations);
@@ -34,7 +35,7 @@ const ConversationLogs = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `http://localhost:5000/api/conversations/admin/${conversationId}/details`,
+        API_ENDPOINTS.ADMIN_CONVERSATIONS_DETAILS(conversationId),
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setConversationDetails(response.data);
