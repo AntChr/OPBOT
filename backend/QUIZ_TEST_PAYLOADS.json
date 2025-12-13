@@ -1,0 +1,213 @@
+{
+  "description": "Réponses de quiz formatées pour tester les métiers enrichis",
+  "instructions": "Copiez l'une de ces réponses et envoyez-la à l'endpoint POST /api/conversations/analyze ou utilisez-la dans le chat pour obtenir une recommandation",
+
+  "test_1_eleveur_ovins": {
+    "title": "Éleveur/Éleveuse d'ovins",
+    "expectedMetier": "A1410",
+    "expectedSalary": "22000-28000€ junior, 28000-35000€ mid, 35000-45000€ senior",
+    "responses": [
+      {
+        "question": "Aimez-vous travailler en extérieur?",
+        "answer": "Oui, beaucoup"
+      },
+      {
+        "question": "Intérêt pour le travail manuel/physique?",
+        "answer": "J'aime bien les tâches pratiques"
+      },
+      {
+        "question": "Préférez-vous travailler seul ou en équipe?",
+        "answer": "Seul ou petit groupe"
+      },
+      {
+        "question": "Aimez-vous les animaux?",
+        "answer": "Oui, je suis passionné"
+      },
+      {
+        "question": "Secteur d'intérêt?",
+        "answer": "Agriculture / Production"
+      },
+      {
+        "question": "Type de responsabilités?",
+        "answer": "Gérer une production / un troupeau"
+      },
+      {
+        "question": "Niveau d'études?",
+        "answer": "Bac professionnel"
+      }
+    ],
+    "conversationText": "Je suis intéressé par l'agriculture. J'aime travailler en extérieur avec les animaux. Je suis passionné par l'élevage, particulièrement l'élevage ovin. J'aime les responsabilités de gestion de troupeau. J'ai un bac professionnel agricole."
+  },
+
+  "test_2_eleveur_compagnie": {
+    "title": "Éleveur/Éleveuse d'animaux de compagnie",
+    "expectedMetier": "A1435",
+    "expectedSalary": "21000-25000€ junior, 25000-35000€ mid, 35000-45000€ senior",
+    "responses": [
+      {
+        "question": "Avez-vous de l'expérience avec les animaux?",
+        "answer": "Oui, j'aime beaucoup les animaux"
+      },
+      {
+        "question": "Aimez-vous la relation client?",
+        "answer": "Oui, communiquer c'est important"
+      },
+      {
+        "question": "Travail en équipe ou autonome?",
+        "answer": "Un peu des deux"
+      },
+      {
+        "question": "Quel environnement préférez-vous?",
+        "answer": "Animalerie, refuge ou petit commerce"
+      },
+      {
+        "question": "Que faites-vous actuellement?",
+        "answer": "Je travaille/étudie dans le secteur animalier"
+      },
+      {
+        "question": "Vos points forts?",
+        "answer": "Empathie et attention aux détails"
+      },
+      {
+        "question": "Formation?",
+        "answer": "CAP ou Bac pro"
+      }
+    ],
+    "conversationText": "J'adore les animaux et j'aimerais en faire mon métier. J'aime communiquer avec les clients et prendre soin des animaux. Je me vois bien dans une animalerie ou un refuge. Je suis empathique et très attentif aux détails. J'ai ou je vise un CAP/Bac pro en animalerie."
+  },
+
+  "test_3_viticulteur": {
+    "title": "Viticulteur/Viticultrice",
+    "expectedMetier": "A1418",
+    "responses": [
+      {
+        "question": "Intérêt pour l'agriculture?",
+        "answer": "Oui, beaucoup"
+      },
+      {
+        "question": "Avez-vous une passion particulière?",
+        "answer": "Oui, la viticulture / le vin"
+      },
+      {
+        "question": "Travail en extérieur?",
+        "answer": "C'est essentiel pour moi"
+      },
+      {
+        "question": "Gestion d'entreprise?",
+        "answer": "J'aimerais créer ma structure"
+      },
+      {
+        "question": "Région d'intérêt?",
+        "answer": "Bourgogne / Bordeaux / Alsace"
+      },
+      {
+        "question": "Saisons?",
+        "answer": "Pas de problème avec le travail saisonnier"
+      }
+    ],
+    "conversationText": "Je suis passionné par le vin et la viticulture. J'aime travailler en extérieur, particulièrement dans les vignobles. Je rêverais de créer mon propre vignoble ou domaine. Le travail saisonnier ne me pose pas de problème."
+  },
+
+  "test_4_exploitant_agricole": {
+    "title": "Exploitant/Exploitante agricole",
+    "expectedMetier": "A1416",
+    "responses": [
+      {
+        "question": "Voulez-vous être indépendant?",
+        "answer": "Oui, j'aimerais créer mon activité"
+      },
+      {
+        "question": "Secteur?",
+        "answer": "Agriculture / Production agricole"
+      },
+      {
+        "question": "Gestion / Management?",
+        "answer": "Oui, j'aime gérer une équipe"
+      },
+      {
+        "question": "Apprentissage?",
+        "answer": "Formations techniquement avancées"
+      },
+      {
+        "question": "Milieu rural?",
+        "answer": "Oui, j'aime la campagne"
+      },
+      {
+        "question": "Responsabilité?",
+        "answer": "J'aime la responsabilité"
+      }
+    ],
+    "conversationText": "Je veux créer ma propre exploitation agricole. J'aime la campagne et gérer une équipe. Je suis prêt à m'investir dans des formations avancées. J'aime les responsabilités et la gestion d'une production agricole complète."
+  },
+
+  "test_5_brasseur": {
+    "title": "Brasseur/Brasseuse de bière",
+    "expectedMetier": "A1413",
+    "responses": [
+      {
+        "question": "Domaine d'intérêt?",
+        "answer": "Alimentation / Boissons artisanales"
+      },
+      {
+        "question": "Type de travail?",
+        "answer": "Travail de production / craft"
+      },
+      {
+        "question": "Entrepreneuriat?",
+        "answer": "Créer ma propre brasserie"
+      },
+      {
+        "question": "Compétences techniques?",
+        "answer": "Chimie / Technologie"
+      },
+      {
+        "question": "Environnement?",
+        "answer": "Usine ou brasserie artisanale"
+      },
+      {
+        "question": "Passion?",
+        "answer": "Oui, pour la bière / la fermentation"
+      }
+    ],
+    "conversationText": "Je suis intéressé par les boissons artisanales, spécialement la bière. Je suis passionné par la fermentation et les processus techniques. J'aimerais créer ma propre brasserie. J'aime combiner la technicité avec la passion de l'artisanat."
+  },
+
+  "test_6_marin_pecheur": {
+    "title": "Marin-pêcheur",
+    "expectedMetier": "A1415",
+    "responses": [
+      {
+        "question": "Intérêt pour la mer?",
+        "answer": "Oui, passionné"
+      },
+      {
+        "question": "Travail physique?",
+        "answer": "J'aime le travail physique"
+      },
+      {
+        "question": "Environnement côtier?",
+        "answer": "Oui, je veux vivre près de la mer"
+      },
+      {
+        "question": "Équipe?",
+        "answer": "Oui, en bateau / petite équipe"
+      },
+      {
+        "question": "Production primaire?",
+        "answer": "Oui, la pêche m'intéresse"
+      },
+      {
+        "question": "Conditions de travail difficiles?",
+        "answer": "Je peux m'adapter"
+      }
+    ],
+    "conversationText": "Je suis passionné par la mer et j'aimerais devenir marin-pêcheur. J'aime le travail physique et je veux vivre côte. Je suis à l'aise en équipe sur un bateau. Je suis prêt à affronter des conditions de travail difficiles."
+  },
+
+  "notes": {
+    "how_to_use_1": "Copiez le 'conversationText' et envoyez-le au chat",
+    "how_to_use_2": "Ou utilisez les 'responses' dans un formulaire de quiz structuré",
+    "verify": "Attendez une recommandation de métier avec les données enrichies",
+    "expected": "Salaire, skills (10-11), traits, RIASEC, environnement, carrière"
+  }
+}

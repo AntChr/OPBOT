@@ -1,0 +1,395 @@
+.questionnaire-analytics {
+  padding: 1rem;
+  color: #fff;
+}
+
+.analytics-loading,
+.analytics-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #fff;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.analytics-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #444;
+}
+
+.analytics-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+
+.total-responses .badge {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+/* Metrics Grid */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.metric-card {
+  background: #2a2a2a;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid #444;
+  transition: transform 0.2s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  border-color: #0d6efd;
+}
+
+.metric-icon {
+  font-size: 2.5rem;
+}
+
+.metric-content {
+  flex: 1;
+}
+
+.metric-title {
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-bottom: 0.3rem;
+}
+
+.metric-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #0d6efd;
+}
+
+/* Global Average */
+.global-average {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.global-average-title {
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.global-average-value {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+/* Will Follow Stats */
+.will-follow-stats {
+  background: #2a2a2a;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid #444;
+}
+
+.stats-title {
+  font-size: 1.3rem;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.stats-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem;
+  background: #333;
+  border-radius: 8px;
+}
+
+.stat-label {
+  color: #ccc;
+  font-size: 1rem;
+}
+
+.stat-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.stat-value.success {
+  color: #28a745;
+}
+
+/* Questionnaires List */
+.questionnaires-list {
+  margin-top: 2rem;
+}
+
+.list-title {
+  font-size: 1.3rem;
+  color: #fff;
+  margin-bottom: 1.5rem;
+}
+
+.questionnaire-item {
+  background: #2a2a2a;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  border: 1px solid #444;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.questionnaire-item:hover {
+  border-color: #0d6efd;
+}
+
+.questionnaire-header-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.questionnaire-header-item:hover {
+  background: #333;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.user-badge {
+  width: 40px;
+  height: 40px;
+  background: #0d6efd;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #fff;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.user-email {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+.job-title {
+  font-size: 0.9rem;
+  color: #0d6efd;
+  font-weight: 500;
+  margin-top: 0.2rem;
+}
+
+.questionnaire-meta {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.rating-badge {
+  background: #28a745;
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.date-submitted {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+.expand-btn {
+  background: none;
+  border: none;
+  color: #0d6efd;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.expand-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Questionnaire Details */
+.questionnaire-details {
+  padding: 1.5rem;
+  background: #222;
+  border-top: 1px solid #444;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 1000px;
+  }
+}
+
+.ratings-detail,
+.will-follow-detail,
+.comments-detail {
+  margin-bottom: 1.5rem;
+}
+
+.ratings-detail h4,
+.will-follow-detail h4,
+.comments-detail h4 {
+  font-size: 1.1rem;
+  color: #fff;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #444;
+  padding-bottom: 0.5rem;
+}
+
+.rating-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem;
+  background: #2a2a2a;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.rating-label {
+  color: #ccc;
+  font-size: 0.95rem;
+}
+
+.stars-display {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.stars-display .star {
+  font-size: 1.3rem;
+  color: #444;
+}
+
+.stars-display .star.filled {
+  color: #ffc107;
+}
+
+.rating-value {
+  margin-left: 0.5rem;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+/* Comments */
+.comment-block {
+  background: #2a2a2a;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid;
+}
+
+.comment-block.positive {
+  border-left-color: #28a745;
+}
+
+.comment-block.improvement {
+  border-left-color: #ffc107;
+}
+
+.comment-block.general {
+  border-left-color: #0d6efd;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+  color: #fff;
+}
+
+.comment-header i {
+  font-size: 1.1rem;
+}
+
+.comment-text {
+  color: #ccc;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .questionnaire-header-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .questionnaire-meta {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .user-info {
+    width: 100%;
+  }
+}

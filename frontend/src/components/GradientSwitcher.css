@@ -1,0 +1,193 @@
+/* ===========================
+   GRADIENT SWITCHER
+   =========================== */
+
+.gradient-switcher {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(51, 65, 85, 0.5);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 400px;
+  max-height: 600px;
+  overflow-y: auto;
+  z-index: 9999;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.switcher-header {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+}
+
+.switcher-header h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #F1F5F9;
+  margin-bottom: 6px;
+}
+
+.switcher-header p {
+  font-size: 0.85rem;
+  color: #CBD5E1;
+  font-weight: 400;
+}
+
+.gradient-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.gradient-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-size: 100% 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.gradient-option::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+}
+
+.gradient-info {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  text-align: left;
+}
+
+.gradient-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.badge {
+  display: inline-block;
+  background: rgba(16, 185, 129, 0.9);
+  color: white;
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.gradient-description {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 400;
+}
+
+.checkmark {
+  position: relative;
+  z-index: 2;
+  font-size: 1.5rem;
+  color: white;
+  display: none;
+  margin-left: 12px;
+  animation: checkBounce 0.3s ease;
+}
+
+@keyframes checkBounce {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.gradient-option:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateX(4px);
+}
+
+.gradient-option.active {
+  border-color: white;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.gradient-option.active .checkmark {
+  display: block;
+}
+
+.switcher-footer {
+  padding-top: 16px;
+  border-top: 1px solid rgba(51, 65, 85, 0.5);
+  text-align: center;
+}
+
+.switcher-footer p {
+  font-size: 0.9rem;
+  color: #CBD5E1;
+  margin-bottom: 8px;
+}
+
+.switcher-footer p strong {
+  color: #F1F5F9;
+  font-weight: 600;
+}
+
+.switcher-footer small {
+  display: block;
+  font-size: 0.8rem;
+  color: #94A3B8;
+  font-weight: 400;
+  line-height: 1.4;
+  margin-top: 8px;
+}
+
+/* Scrollbar styling */
+.gradient-switcher::-webkit-scrollbar {
+  width: 6px;
+}
+
+.gradient-switcher::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.gradient-switcher::-webkit-scrollbar-thumb {
+  background: rgba(51, 65, 85, 0.5);
+  border-radius: 3px;
+}
+
+.gradient-switcher::-webkit-scrollbar-thumb:hover {
+  background: rgba(51, 65, 85, 0.8);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .gradient-switcher {
+    bottom: 10px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+}
