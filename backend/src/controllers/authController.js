@@ -263,6 +263,55 @@ const authController = {
         message: 'Erreur serveur'
       });
     }
+  },
+
+  // Forgot password - reset password with email verification
+  forgotPassword: async (req, res) => {
+    try {
+      const { email, newPassword } = req.body;
+
+      // Validation
+      if (!email || !newPassword) {
+        return res.status(400).json({
+          success: false,
+          message: 'Email et nouveau mot de passe requis'
+        });
+      }
+
+      // Validate password strength
+      const passwordError = validatePassword(newPassword);
+      if (passwordError) {
+        return res.status(400).json({
+          success: false,
+          message: passwordError
+        });
+      }
+
+      // Find user by email
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: 'Aucun utilisateur trouvé avec cet email'
+        });
+      }
+
+      // Update password (will be hashed by the User model pre-save hook)
+      user.password = newPassword;
+      await user.save();
+
+      res.json({
+        success: true,
+        message: 'Mot de passe réinitialisé avec succès'
+      });
+
+    } catch (error) {
+      console.error('Forgot password error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Erreur serveur lors de la réinitialisation du mot de passe'
+      });
+    }
   }
 };
 

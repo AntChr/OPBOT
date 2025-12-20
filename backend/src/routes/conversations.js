@@ -249,4 +249,27 @@ router.get('/admin/:conversationId/details', authenticateToken, adminAuth, async
   }
 });
 
+// Admin: Supprimer une conversation
+router.delete('/admin/:conversationId', authenticateToken, adminAuth, async (req, res) => {
+  try {
+    const { conversationId } = req.params;
+    const Conversation = require('../models/Conversation');
+
+    const conversation = await Conversation.findByIdAndDelete(conversationId);
+
+    if (!conversation) {
+      return res.status(404).json({ error: 'Conversation non trouvée' });
+    }
+
+    res.json({
+      success: true,
+      message: 'Conversation supprimée avec succès'
+    });
+
+  } catch (error) {
+    console.error('   ❌ Erreur admin delete conversation:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;

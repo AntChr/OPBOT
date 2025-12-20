@@ -16,6 +16,14 @@ const Auth = ({ onLogin }) => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [forgotPasswordData, setForgotPasswordData] = useState({
+    email: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+  const [forgotPasswordError, setForgotPasswordError] = useState('');
+  const [forgotPasswordSuccess, setForgotPasswordSuccess] = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -62,6 +70,67 @@ const Auth = ({ onLogin }) => {
       lastName: ''
     });
     setError('');
+  };
+
+  const handleForgotPasswordChange = (e) => {
+    setForgotPasswordData({
+      ...forgotPasswordData,
+      [e.target.name]: e.target.value
+    });
+    setForgotPasswordError('');
+    setForgotPasswordSuccess('');
+  };
+
+  const handleForgotPasswordSubmit = async (e) => {
+    e.preventDefault();
+    setForgotPasswordError('');
+    setForgotPasswordSuccess('');
+
+    // Validation
+    if (forgotPasswordData.newPassword !== forgotPasswordData.confirmPassword) {
+      setForgotPasswordError('Les mots de passe ne correspondent pas');
+      return;
+    }
+
+    if (forgotPasswordData.newPassword.length < 8) {
+      setForgotPasswordError('Le mot de passe doit contenir au minimum 8 caractères');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await axios.post(API_ENDPOINTS.FORGOT_PASSWORD, {
+        email: forgotPasswordData.email,
+        newPassword: forgotPasswordData.newPassword
+      });
+
+      if (response.data.success) {
+        setForgotPasswordSuccess('Mot de passe réinitialisé avec succès !');
+        setTimeout(() => {
+          setShowForgotPassword(false);
+          setForgotPasswordData({ email: '', newPassword: '', confirmPassword: '' });
+          setForgotPasswordSuccess('');
+        }, 2000);
+      }
+    } catch (err) {
+      setForgotPasswordError(err.response?.data?.message || 'Une erreur est survenue');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const openForgotPasswordModal = () => {
+    setShowForgotPassword(true);
+    setForgotPasswordError('');
+    setForgotPasswordSuccess('');
+  };
+
+  const closeForgotPasswordModal = () => {
+    setShowForgotPassword(false);
+    setForgotPasswordData({ email: '', newPassword: '', confirmPassword: '' });
+    setForgotPasswordError('');
+    setForgotPasswordSuccess('');
   };
 
   return (
@@ -157,6 +226,14 @@ const Auth = ({ onLogin }) => {
             )}
           </div>
 
+          {isLogin && (
+            <div className="forgot-password-link">
+              <a href="#" onClick={(e) => { e.preventDefault(); openForgotPasswordModal(); }}>
+                Mot de passe oublié ?
+              </a>
+            </div>
+          )}
+
           <button
             type="submit"
             disabled={loading}
@@ -175,6 +252,94 @@ const Auth = ({ onLogin }) => {
           </button>
         </div>
       </div>
+
+      {/* Modal Mot de passe oublié */}
+      {showForgotPassword && (
+        <div className="modal-overlay" onClick={closeForgotPasswordModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Réinitialiser le mot de passe</h2>
+              <button className="modal-close" onClick={closeForgotPasswordModal}>
+                &times;
+              </button>
+            </div>
+
+            {forgotPasswordError && (
+              <div className="auth-error" role="alert">
+                {forgotPasswordError}
+              </div>
+            )}
+
+            {forgotPasswordSuccess && (
+              <div className="auth-success" role="alert">
+                {forgotPasswordSuccess}
+              </div>
+            )}
+
+            <form onSubmit={handleForgotPasswordSubmit}>
+              <div className="form-group">
+                <label htmlFor="forgot-email">Email</label>
+                <input
+                  type="email"
+                  id="forgot-email"
+                  name="email"
+                  value={forgotPasswordData.email}
+                  onChange={handleForgotPasswordChange}
+                  placeholder="votre.email@exemple.com"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="new-password">Nouveau mot de passe</label>
+                <input
+                  type="password"
+                  id="new-password"
+                  name="newPassword"
+                  value={forgotPasswordData.newPassword}
+                  onChange={handleForgotPasswordChange}
+                  placeholder="Nouveau mot de passe"
+                  required
+                  minLength="8"
+                />
+                <span className="form-help">Minimum 8 caractères</span>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="confirm-password">Confirmer le mot de passe</label>
+                <input
+                  type="password"
+                  id="confirm-password"
+                  name="confirmPassword"
+                  value={forgotPasswordData.confirmPassword}
+                  onChange={handleForgotPasswordChange}
+                  placeholder="Confirmer le mot de passe"
+                  required
+                  minLength="8"
+                />
+              </div>
+
+              <div className="modal-actions">
+                <button
+                  type="button"
+                  onClick={closeForgotPasswordModal}
+                  className="cancel-button"
+                  disabled={loading}
+                >
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  className="submit-button"
+                  disabled={loading}
+                >
+                  {loading ? 'Réinitialisation...' : 'Réinitialiser'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

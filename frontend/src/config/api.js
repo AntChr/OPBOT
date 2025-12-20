@@ -1,10 +1,13 @@
 /**
  * Configuration centralisée de l'API
- * Utilise les variables d'environnement Vite
+ * Détecte automatiquement l'environnement (local vs production)
  */
 
-// TEMPORARY: Hard-coded for testing
-export const API_URL = 'https://opbot-production.up.railway.app';
+// Détection automatique : localhost = backend local, sinon = Railway
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+export const API_URL = isLocalhost
+  ? 'http://localhost:5000'
+  : 'https://opbot-production.up.railway.app';
 
 /**
  * Endpoints de l'API
@@ -15,6 +18,7 @@ export const API_ENDPOINTS = {
   REGISTER: `${API_URL}/api/auth/register`,
   ME: `${API_URL}/api/auth/me`,
   UPDATE_PROFILE: `${API_URL}/api/auth/update-profile`,
+  FORGOT_PASSWORD: `${API_URL}/api/auth/forgot-password`,
 
   // Conversations
   CONVERSATIONS_START: `${API_URL}/api/conversations/start`,
@@ -43,6 +47,7 @@ export const API_ENDPOINTS = {
   ADMIN_USERS_ALT: `${API_URL}/api/auth/admin/users`,
   ADMIN_CONVERSATIONS: `${API_URL}/api/conversations/admin/all`,
   ADMIN_CONVERSATIONS_DETAILS: (conversationId) => `${API_URL}/api/conversations/admin/${conversationId}/details`,
+  ADMIN_CONVERSATIONS_DELETE: (conversationId) => `${API_URL}/api/conversations/admin/${conversationId}`,
 };
 
 export default API_URL;

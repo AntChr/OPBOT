@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
-const rateLimit = require("express-rate-limit");
+const { apiLimiter } = require('./src/middleware/rateLimiters');
 
 dotenv.config();
 const app = express();
@@ -27,20 +27,7 @@ app.use(cors(corsOptions));
 app.use(express.json({ charset: 'utf-8', limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, charset: 'utf-8', limit: '10kb' }));
 
-// General API rate limiting
-const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  message: 'Trop de requêtes depuis cette IP, veuillez réessayer plus tard'
-});
-
-// Stricter rate limiting for auth endpoints
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // limit each IP to 5 requests per windowMs
-  message: 'Trop de tentatives de connexion, veuillez réessayer plus tard'
-});
-
+// General API rate limiting (100 req/15min)
 app.use('/api/', apiLimiter);
 
 // Connexion Mongo
@@ -55,7 +42,8 @@ const jobsRoutes = require('./src/routes/jobs.js');
 const phase2Routes = require('./src/routes/phase2.js');
 const questionnaireRoutes = require('./src/routes/questionnaire.js');
 
-app.use('/api/auth', authLimiter, authRoutes);
+// Auth routes have their own specific rate limiters defined in auth.js
+app.use('/api/auth', authRoutes);
 app.use('/api/conversations', conversationRoutes);
 app.use('/api/jobs', jobsRoutes);
 app.use('/api/phase2', phase2Routes);

@@ -46,6 +46,35 @@ const ConversationLogs = () => {
     }
   };
 
+  const deleteConversation = async (conversationId, e) => {
+    // Empêcher la propagation pour ne pas ouvrir les détails
+    e.stopPropagation();
+
+    if (!window.confirm('Êtes-vous sûr de vouloir supprimer cette conversation ? Cette action est irréversible.')) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      await axios.delete(
+        API_ENDPOINTS.ADMIN_CONVERSATIONS_DELETE(conversationId),
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      // Fermer les détails si c'est la conversation sélectionnée
+      if (selectedConversation === conversationId) {
+        setSelectedConversation(null);
+        setConversationDetails(null);
+      }
+
+      // Rafraîchir la liste
+      fetchConversations();
+    } catch (err) {
+      console.error('Error deleting conversation:', err);
+      alert('Erreur lors de la suppression de la conversation');
+    }
+  };
+
   const getStatusBadge = (status) => {
     const badges = {
       active: { text: 'Active', class: 'status-active' },
@@ -108,9 +137,14 @@ const ConversationLogs = () => {
   return (
     <div className="conversation-logs-container">
       <div className="logs-header">
-        <h2>
-          <i className="fa-solid fa-comments"></i> Logs des Conversations
-        </h2>
+        <div className="header-title-row">
+          <h2>
+            <i className="fa-solid fa-comments"></i> Logs des Conversations
+          </h2>
+          <button onClick={fetchConversations} className="refresh-btn" title="Actualiser les conversations">
+            <i className="fa-solid fa-rotate"></i> Actualiser
+          </button>
+        </div>
         <div className="header-stats">
           <div className="stat-card">
             <span className="stat-value">{conversations.length}</span>
@@ -181,7 +215,16 @@ const ConversationLogs = () => {
                       <small>{conv.user?.email}</small>
                     </div>
                   </div>
-                  {getStatusBadge(conv.status)}
+                  <div className="card-header-actions">
+                    {getStatusBadge(conv.status)}
+                    <button
+                      className="delete-btn"
+                      onClick={(e) => deleteConversation(conv._id, e)}
+                      title="Supprimer cette conversation"
+                    >
+                      <i className="fa-solid fa-trash"></i>
+                    </button>
+                  </div>
                 </div>
                 <div className="card-body">
                   <div className="info-row">
