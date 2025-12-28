@@ -7,6 +7,7 @@ import Auth from './components/Auth'
 import Results from './components/Results'
 import Conclusion from './components/Conclusion'
 import ActionPlanPanel from './components/ActionPlanPanel'
+import Training from './components/Training'
 import Questionnaire from './components/Questionnaire'
 import ChatWrapper from './components/ChatWrapper'
 import './App.css'
@@ -20,6 +21,7 @@ function App() {
   const [user, setUser] = useState(null)
   const [token, setToken] = useState(null)
   const [showChat, setShowChat] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     // Check for existing authentication
@@ -32,6 +34,9 @@ function App() {
       // Set default authorization header
       axios.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`
     }
+
+    // Authentification vérifiée, on peut afficher l'app
+    setIsLoading(false)
   }, [])
 
   const handleChatComplete = (chatResults) => {
@@ -69,6 +74,24 @@ function App() {
     localStorage.removeItem('user')
     delete axios.defaults.headers.common['Authorization']
     restartChat()
+  }
+
+  // Attendre la vérification de l'authentification avant d'afficher quoi que ce soit
+  if (isLoading) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        background: 'var(--dark-bg)'
+      }}>
+        <div style={{ textAlign: 'center', color: 'white' }}>
+          <i className="fa-solid fa-spinner fa-spin" style={{ fontSize: '3rem', marginBottom: '1rem' }}></i>
+          <p>Chargement...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -203,6 +226,20 @@ function App() {
               path="/action-plan"
               element={
                 <ActionPlanPanel
+                  onBackToQuiz={() => {
+                    setShowAdmin(false)
+                    setShowChat(true)
+                  }}
+                  user={user}
+                />
+              }
+            />
+
+            {/* Training page (Formation personnalisée) */}
+            <Route
+              path="/training"
+              element={
+                <Training
                   onBackToQuiz={() => {
                     setShowAdmin(false)
                     setShowChat(true)

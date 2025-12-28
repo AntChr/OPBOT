@@ -103,11 +103,24 @@ const Conclusion = ({ conversation, user, onLogout, onShowAdmin, onRestart }) =>
                 </div>
               </div>
 
-              {/* CTA Button */}
+              {/* CTA Buttons */}
               <div className={`conclusion-actions ${animationPhase === 'ready' ? 'fade-in-up' : ''}`}>
-                <button className="btn btn-primary" onClick={() => navigate('/questionnaire')}>
-                  <i className="fa-solid fa-clipboard-check"></i> Donner mon avis
-                </button>
+                <div className="d-flex flex-column gap-3">
+                  <div className="d-flex gap-3 justify-content-center">
+                    <button className="btn btn-primary" onClick={() => navigate('/action-plan')}>
+                      <i className="fa-solid fa-list-check me-2"></i>
+                      Mon Plan d'Action
+                    </button>
+                    <button className="btn btn-success" onClick={() => navigate('/training')}>
+                      <i className="fa-solid fa-graduation-cap me-2"></i>
+                      Ma Formation
+                    </button>
+                  </div>
+                  <button className="btn btn-outline-secondary" onClick={() => navigate('/questionnaire')}>
+                    <i className="fa-solid fa-clipboard-check me-2"></i>
+                    Donner mon avis
+                  </button>
+                </div>
               </div>
 
               {/* Motivational quote */}

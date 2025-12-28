@@ -47,6 +47,14 @@ export const API_ENDPOINTS = {
   ACTION_PLAN_GENERATE: `${API_URL}/api/action-plan/generate`,
   ACTION_PLAN_ADMIN_ALL: `${API_URL}/api/action-plan/admin/all`,
   ACTION_PLAN_DELETE: (planId) => `${API_URL}/api/action-plan/${planId}`,
+
+  // Training (Formation personnalisée)
+  TRAINING_GET: (userId) => `${API_URL}/api/trainings/${userId}`,
+  TRAINING_GENERATE: `${API_URL}/api/trainings/generate`,
+  TRAINING_MODULE_DETAIL: (trainingId, moduleNumber) => `${API_URL}/api/trainings/module/${trainingId}/${moduleNumber}`,
+  TRAINING_LESSON_COMPLETE: (trainingId) => `${API_URL}/api/trainings/lesson/${trainingId}/complete`,
+  TRAINING_MODULE_COMPLETE: (trainingId) => `${API_URL}/api/trainings/module/${trainingId}/complete`,
+  TRAINING_SUBMIT_EXERCISE: `${API_URL}/api/trainings/submit-exercise`,
 };
 
 export default API_URL;

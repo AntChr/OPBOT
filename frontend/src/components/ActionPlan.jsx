@@ -149,6 +149,8 @@ const ActionPlan = ({ conversation, user, onLogout, onShowAdmin, onRestart }) =>
         showResetButton={user?.role === 'admin'}
         onReset={onRestart}
         title="📋 Votre Plan d'Action"
+        showTrainingButton={true}
+        onShowTraining={() => navigate('/training')}
       />
 
       <div className="action-plan-content">

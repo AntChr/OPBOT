@@ -17,6 +17,8 @@ function ChatWrapper({ user, onLogout, onShowAdmin, onReset, showResetButton, on
         title="Assistant d'Orientation"
         showActionPlanButton={true}
         onShowActionPlan={() => navigate('/action-plan')}
+        showTrainingButton={true}
+        onShowTraining={() => navigate('/training')}
       />
       <ChatInterface
         user={user}

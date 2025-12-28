@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
-const Navbar = ({ onLogout, onShowAdmin, onReset, showAdminButton = true, showResetButton = false, isAdmin = false, onBackToChat = null, title = null, user = null, showBotAvatar = false, showActionPlanButton = false, onShowActionPlan = null }) => {
+const Navbar = ({ onLogout, onShowAdmin, onReset, showAdminButton = true, showResetButton = false, isAdmin = false, onBackToChat = null, title = null, user = null, showBotAvatar = false, showActionPlanButton = false, onShowActionPlan = null, showTrainingButton = false, onShowTraining = null }) => {
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
@@ -59,6 +59,16 @@ const Navbar = ({ onLogout, onShowAdmin, onReset, showAdminButton = true, showRe
               title="Mon Plan d'Action"
             >
               <i className="fa-solid fa-list-check"></i>
+            </button>
+          )}
+
+          {showTrainingButton && onShowTraining && (
+            <button
+              onClick={onShowTraining}
+              className="navbar-button"
+              title="Ma Formation"
+            >
+              <i className="fa-solid fa-graduation-cap"></i>
             </button>
           )}
 
