@@ -180,7 +180,7 @@ router.post('/save-from-n8n', async (req, res) => {
         lessons: (module.lessons || []).map((lesson, lessonIndex) => ({
           lessonNumber: lesson.lesson_number || lesson.lessonNumber || lessonIndex + 1,
           title: lesson.title,
-          keyConcept: lesson.key_concept || lesson.keyConcept,
+          keyConcept: lesson.key_concept || lesson.keyConcept || lesson.title, // Fallback to title if missing
           context: lesson.context || '',
           content: lesson.content,
           miniExercise: lesson.mini_exercise || lesson.miniExercise ? {
