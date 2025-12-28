@@ -27,12 +27,17 @@ function App() {
     // Check for existing authentication
     const savedToken = localStorage.getItem('token')
     const savedUser = localStorage.getItem('user')
+    const savedConversation = localStorage.getItem('conversation')
 
     if (savedToken && savedUser) {
       setToken(savedToken)
       setUser(JSON.parse(savedUser))
       // Set default authorization header
       axios.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`
+    }
+
+    if (savedConversation) {
+      setConversation(JSON.parse(savedConversation))
     }
 
     // Authentification vérifiée, on peut afficher l'app
@@ -70,8 +75,10 @@ function App() {
   const handleLogout = () => {
     setUser(null)
     setToken(null)
+    setConversation(null)
     localStorage.removeItem('token')
     localStorage.removeItem('user')
+    localStorage.removeItem('conversation')
     delete axios.defaults.headers.common['Authorization']
     restartChat()
   }
@@ -212,6 +219,7 @@ function App() {
                       onComplete={handleChatComplete}
                       onMilestoneComplete={(conv) => {
                         setConversation(conv)
+                        localStorage.setItem('conversation', JSON.stringify(conv))
                         setShowConclusion(true)
                         setShowChat(false)
                       }}

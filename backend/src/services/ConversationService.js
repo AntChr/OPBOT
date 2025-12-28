@@ -476,14 +476,14 @@ class ConversationService {
                 console.log(`   ✅ Auto-confirmé (needsConfirmation: false)`);
               }
 
-              // Sauvegarder le métier recommandé dans le profil utilisateur
+              // Sauvegarder le métier cible dans le profil utilisateur
               if (detected.jobTitle) {
                 await User.findByIdAndUpdate(
                   conversation.userId,
-                  { $set: { recommendedJob: detected.jobTitle } },
+                  { $set: { targetJob: detected.jobTitle } },
                   { new: true }
                 );
-                console.log(`   ✅ Métier recommandé sauvegardé dans le profil utilisateur`);
+                console.log(`   💾 Métier cible sauvegardé dans le profil utilisateur`);
               }
 
               newMilestonesCount++;

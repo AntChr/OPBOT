@@ -79,9 +79,10 @@ const userSchema = new mongoose.Schema({
     // middle_school = collège, high_school = lycée, bac = baccalauréat, bac_plus_2 = BTS/DUT,
     // bac_plus_3 = Licence, bac_plus_5 = Master, phd = Doctorat
   },
-  recommendedJob: {
+  targetJob: {
     type: String,
-    trim: true
+    trim: true,
+    default: null
   },
   traitVector: {
     type: Map,

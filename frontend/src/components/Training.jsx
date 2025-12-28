@@ -117,11 +117,12 @@ function Training({ onBackToQuiz, user }) {
       }, 7000) // Changer d'étape toutes les 7 secondes
 
       const token = localStorage.getItem('token')
-      const targetJob = user.recommendedJob || 'Votre métier idéal'
+      const targetJob = user.targetJob || 'Métier à définir'
 
       console.log('🎓 Génération formation:', {
         userId: user._id,
-        targetJob
+        targetJob,
+        hasTargetJob: !!user.targetJob
       })
 
       const response = await axios.post(
