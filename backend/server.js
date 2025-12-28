@@ -24,8 +24,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Request size limits to prevent DoS attacks
-app.use(express.json({ charset: 'utf-8', limit: '10kb' }));
-app.use(express.urlencoded({ extended: true, charset: 'utf-8', limit: '10kb' }));
+// Note: /api/trainings/save-from-n8n et /api/action-plan/save-from-n8n nécessitent plus (formations volumineuses)
+app.use(express.json({ charset: 'utf-8', limit: '500kb' }));
+app.use(express.urlencoded({ extended: true, charset: 'utf-8', limit: '500kb' }));
 
 // General API rate limiting (100 req/15min)
 app.use('/api/', apiLimiter);
@@ -42,6 +43,8 @@ const jobsRoutes = require('./src/routes/jobs.js');
 const phase2Routes = require('./src/routes/phase2.js');
 const questionnaireRoutes = require('./src/routes/questionnaire.js');
 const actionPlanRoutes = require('./src/routes/actionPlan.js');
+const skillsAssessmentRoutes = require('./src/routes/skillsAssessment.js');
+const trainingsRoutes = require('./src/routes/trainings.js');
 
 // Auth routes have their own specific rate limiters defined in auth.js
 app.use('/api/auth', authRoutes);
@@ -50,6 +53,8 @@ app.use('/api/jobs', jobsRoutes);
 app.use('/api/phase2', phase2Routes);
 app.use('/api/questionnaire', questionnaireRoutes);
 app.use('/api/action-plan', actionPlanRoutes);
+app.use('/api/skills-assessment', skillsAssessmentRoutes);
+app.use('/api/trainings', trainingsRoutes);
 
 // Routes test
 app.get("/", (req, res) => res.send("API is working"));
