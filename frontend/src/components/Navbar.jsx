@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
-const Navbar = ({ onLogout, onShowAdmin, onReset, showAdminButton = true, showResetButton = false, isAdmin = false, onBackToChat = null, title = null, user = null, showBotAvatar = false }) => {
+const Navbar = ({ onLogout, onShowAdmin, onReset, showAdminButton = true, showResetButton = false, isAdmin = false, onBackToChat = null, title = null, user = null, showBotAvatar = false, showActionPlanButton = false, onShowActionPlan = null }) => {
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
@@ -49,6 +49,16 @@ const Navbar = ({ onLogout, onShowAdmin, onReset, showAdminButton = true, showRe
               title="Recommencer la conversation"
             >
               <i className="fa-solid fa-rotate-right"></i>
+            </button>
+          )}
+
+          {showActionPlanButton && onShowActionPlan && (
+            <button
+              onClick={onShowActionPlan}
+              className="navbar-button"
+              title="Mon Plan d'Action"
+            >
+              <i className="fa-solid fa-list-check"></i>
             </button>
           )}
 

@@ -54,6 +54,7 @@ class ClaudeService {
       return {
         message: parsed.message,
         extractedInsights: parsed.insights,
+        profileData: parsed.profileData,
         shouldTransitionPhase: parsed.shouldTransitionPhase || false,
         milestones: parsed.milestones,
         metadata: {
@@ -191,12 +192,50 @@ ${milestoneSummary}
 **Profil utilisateur actuel :**
 ${profileSummary}
 
-**Instructions :**
+**COLLECTE PROFIL UTILISATEUR (PRIORITÉ ABSOLUE AU DÉBUT) :**
+🔴 AVANT toute exploration de métier, tu DOIS collecter ces 5 informations (+ 1 optionnelle) de manière NATURELLE et CONVERSATIONNELLE :
+1. **Âge** (exemple: "Pour mieux te guider, quel âge as-tu ?")
+2. **Lieu de résidence** (exemple: "Tu es de quelle région ?")
+3. **Situation actuelle** (exemple: "Tu es actuellement en poste, en études, ou autre chose ?")
+   - Si en poste → demander le métier actuel
+   - Si en formation → demander le domaine d'études
+   - Si au chômage ou autre → noter simplement
+4. **Niveau d'études** (exemple: "Quel est ton niveau d'études ? Bac, Bac+2, Bac+5... ?")
+   - Valeurs possibles : collège, lycée, bac, bac+2 (BTS/DUT), bac+3 (Licence), bac+5 (Master), doctorat, autre
+5. **⚠️ SI EN POSTE - Ressenti métier actuel** (exemple: "Comment te sens-tu dans ton métier actuel ? Épanoui, satisfait, neutre, insatisfait... ?")
+   - SEULEMENT si currentSituation = "employed"
+   - Question CRUCIALE pour comprendre si reconversion ou évolution
+   - Valeurs: adore, satisfait, neutre, insatisfait, déteste, en burnout
+   - Aide à orienter vers métier similaire (si satisfait) ou totalement différent (si insatisfait)
+
+💡 Intègre ces questions NATURELLEMENT dans les 3-4 premiers échanges. Ne fais PAS un interrogatoire, mais glisse ces questions dans le flow conversationnel.
+💡 Le ressenti métier est CRUCIAL - il t'aide à comprendre si l'utilisateur veut changer complètement de voie ou juste évoluer.
+
+**MODE CHALLENGE (VALIDATION DES PASSIONS/PROJETS) :**
+⚠️ RÈGLE IMPORTANTE : Quand l'utilisateur mentionne une passion, un projet ou un métier qui l'intéresse, tu DOIS le challenger avec 2 questions de validation AVANT de valider ce choix.
+
+Exemples de challenge :
+- "Tu as mentionné [passion]. Qu'est-ce qui t'attire précisément là-dedans ?"
+- "Tu connais les réalités concrètes de ce métier ? (horaires, conditions, aspects moins glamour)"
+- "Tu as déjà pratiqué [passion] de manière régulière ou c'est plutôt une idée qui te plaît ?"
+- "Ce qui t'attire, c'est [aspect créatif] ou plutôt [aspect pratique] ?"
+
+🎯 Objectif : S'assurer que l'utilisateur a vraiment réfléchi et n'est pas influencé par une vision idéalisée. 2 questions max pour ne pas décourager.
+
+**CHOIX MULTIPLES INTÉGRÉS (FACILITATEUR) :**
+💡 Pour aider les utilisateurs à répondre, propose naturellement des EXEMPLES/OPTIONS dans tes questions :
+- ❌ Mauvais : "Qu'est-ce qui te plaît dans le travail ?"
+- ✅ Bon : "Qu'est-ce qui te plaît dans le travail ? Par exemple : travailler avec les gens, créer des choses, résoudre des problèmes, diriger une équipe... Ou autre chose ?"
+
+L'utilisateur peut choisir parmi les options OU répondre librement. C'est GUIDANT mais pas limitant.
+
+**Instructions générales :**
 1. Pose UNE SEULE question pertinente et naturelle basée sur le contexte
 2. Adapte ton ton au style de la phase actuelle
 3. Rebondis sur les réponses précédentes pour montrer que tu écoutes
 4. Évite les questions trop similaires à celles déjà posées
 5. Sois concis (2-3 phrases maximum pour ta question)
+6. Réponds aux questions de l'utilisateur si il t'en pose (sois utile et engageant)
 ${specialInstructions}
 
 **IMPORTANT - Condition d'arrêt :**
@@ -213,6 +252,14 @@ ${specialInstructions}
     "values": [{"value": "valeur", "confidence": 0.9, "evidence": "raison"}],
     "constraints": [{"type": "type", "description": "description"}]
   },
+  "profileData": {
+    "age": null,
+    "location": null,
+    "currentSituation": null,
+    "currentJob": null,
+    "currentJobFeeling": null,
+    "education": null
+  },
   "milestones": {
     "passions_identified": {"achieved": true/false, "confidence": 0-100, "needsConfirmation": true/false},
     "role_determined": {"achieved": true/false, "confidence": 0-100, "value": "Manager/Créatif/Expert/etc", "needsConfirmation": true/false},
@@ -223,6 +270,23 @@ ${specialInstructions}
   "shouldTransitionPhase": false,
   "confidence": 0.85
 }
+
+**NOTE SUR profileData :**
+- Remplis UNIQUEMENT les champs que tu as détectés dans la réponse de l'utilisateur
+- Si l'utilisateur dit "j'ai 25 ans" → "age": 25
+- Si l'utilisateur dit "je suis de Paris" → "location": "Paris"
+- Si l'utilisateur dit "je suis étudiant" → "currentSituation": "student"
+- Si l'utilisateur dit "je travaille comme développeur" → "currentSituation": "employed", "currentJob": "développeur"
+- Si l'utilisateur dit "j'adore mon métier" → "currentJobFeeling": "love"
+- Si l'utilisateur dit "je suis satisfait" ou "ça va bien" → "currentJobFeeling": "like"
+- Si l'utilisateur dit "c'est pas terrible" ou "je m'ennuie" → "currentJobFeeling": "dislike"
+- Si l'utilisateur dit "je déteste" ou "je ne supporte plus" → "currentJobFeeling": "hate"
+- Si l'utilisateur dit "épuisé", "burnout", "en souffrance" → "currentJobFeeling": "burnout"
+- Valeurs possibles pour currentJobFeeling : "love", "like", "neutral", "dislike", "hate", "burnout"
+- Si l'utilisateur dit "j'ai un bac+5" → "education": "bac_plus_5"
+- Si l'utilisateur dit "j'ai le bac" → "education": "bac"
+- Valeurs possibles pour education : "middle_school", "high_school", "bac", "bac_plus_2", "bac_plus_3", "bac_plus_5", "phd", "other"
+- Laisse null les champs non mentionnés
 
 **MILESTONES - SYSTÈME DE PROGRESSION SÉQUENTIELLE :**
 ⚠️ RÈGLE ABSOLUE: Les milestones DOIVENT être atteints dans l'ordre 1→2→3→4→5. Ne JAMAIS sauter un milestone.
@@ -538,6 +602,7 @@ VÉRIFIE que chaque "jobId" existe dans la liste JSON des métiers fournie.`;
       return {
         message: parsed.message,
         insights: parsed.insights || {},
+        profileData: parsed.profileData || {},
         shouldTransitionPhase: parsed.shouldTransitionPhase || false,
         confidence: parsed.confidence || 0.8,
         milestones: parsed.milestones || {}

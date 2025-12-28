@@ -4,12 +4,11 @@ import axios from 'axios'
 import Landing from './components/Landing'
 import AdminPanel from './components/AdminPanel'
 import Auth from './components/Auth'
-import Navbar from './components/Navbar'
 import Results from './components/Results'
 import Conclusion from './components/Conclusion'
-import ActionPlan from './components/ActionPlan'
+import ActionPlanPanel from './components/ActionPlanPanel'
 import Questionnaire from './components/Questionnaire'
-import ChatInterface from './components/Chat/ChatInterface'
+import ChatWrapper from './components/ChatWrapper'
 import './App.css'
 
 function App() {
@@ -106,19 +105,9 @@ function App() {
         <Route
           path="/test-action-plan"
           element={
-            <ActionPlan
-              conversation={{
-                milestones: {
-                  specific_job_identified: {
-                    jobTitle: '🥐 Manager de Boulangerie',
-                    conclusionMessage: `Vous avez ce leadership naturel, cette passion pour les gens et cette créativité qu'il faut pour diriger. Manager une boulangerie vous permettra de créer une ambiance unique, de diriger une équipe bienveillante, et de voir l'impact direct de votre travail chaque jour. C'est LA synthèse parfaite entre votre besoin de diriger, votre amour pour les interactions humaines, et cette créativité que vous avez exprimée. On a peut-être trouvé votre voie. 🎯`
-                  }
-                }
-              }}
-              user={user}
-              onLogout={handleLogout}
-              onShowAdmin={() => setShowAdmin(true)}
-              onRestart={restartChat}
+            <ActionPlanPanel
+              onBackToQuiz={() => setShowChat(true)}
+              user={user || { _id: 'test-user-id', firstName: 'Test', lastName: 'User', role: 'admin' }}
             />
           }
         />
@@ -191,26 +180,19 @@ function App() {
                       onShowAdmin={() => setShowAdmin(true)}
                     />
                   ) : showChat ? (
-                    <div className="min-vh-100 w-100" style={{background: 'var(--dark-bg)'}}>
-                      <Navbar
-                        user={user}
-                        onLogout={handleLogout}
-                        onShowAdmin={() => setShowAdmin(true)}
-                        onReset={handleResetConversation}
-                        showResetButton={user?.role === 'admin'}
-                        showBotAvatar={true}
-                        title="Assistant d'Orientation"
-                      />
-                      <ChatInterface
-                        user={user}
-                        onComplete={handleChatComplete}
-                        onMilestoneComplete={(conv) => {
-                          setConversation(conv)
-                          setShowConclusion(true)
-                          setShowChat(false)
-                        }}
-                      />
-                    </div>
+                    <ChatWrapper
+                      user={user}
+                      onLogout={handleLogout}
+                      onShowAdmin={() => setShowAdmin(true)}
+                      onReset={handleResetConversation}
+                      showResetButton={user?.role === 'admin'}
+                      onComplete={handleChatComplete}
+                      onMilestoneComplete={(conv) => {
+                        setConversation(conv)
+                        setShowConclusion(true)
+                        setShowChat(false)
+                      }}
+                    />
                   ) : null}
                 </>
               }
@@ -220,12 +202,12 @@ function App() {
             <Route
               path="/action-plan"
               element={
-                <ActionPlan
-                  conversation={conversation}
+                <ActionPlanPanel
+                  onBackToQuiz={() => {
+                    setShowAdmin(false)
+                    setShowChat(true)
+                  }}
                   user={user}
-                  onLogout={handleLogout}
-                  onShowAdmin={() => setShowAdmin(true)}
-                  onRestart={restartChat}
                 />
               }
             />

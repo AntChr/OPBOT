@@ -41,6 +41,7 @@ const conversationRoutes = require('./src/routes/conversations.js');
 const jobsRoutes = require('./src/routes/jobs.js');
 const phase2Routes = require('./src/routes/phase2.js');
 const questionnaireRoutes = require('./src/routes/questionnaire.js');
+const actionPlanRoutes = require('./src/routes/actionPlan.js');
 
 // Auth routes have their own specific rate limiters defined in auth.js
 app.use('/api/auth', authRoutes);
@@ -48,6 +49,7 @@ app.use('/api/conversations', conversationRoutes);
 app.use('/api/jobs', jobsRoutes);
 app.use('/api/phase2', phase2Routes);
 app.use('/api/questionnaire', questionnaireRoutes);
+app.use('/api/action-plan', actionPlanRoutes);
 
 // Routes test
 app.get("/", (req, res) => res.send("API is working"));

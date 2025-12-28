@@ -48,6 +48,41 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'admin'],
     default: 'user'
   },
+  // Profil utilisateur enrichi
+  age: {
+    type: Number,
+    min: 14,
+    max: 99
+  },
+  location: {
+    type: String,
+    trim: true
+  },
+  currentSituation: {
+    type: String,
+    enum: ['employed', 'student', 'unemployed', 'self-employed', 'other'],
+    // employed = en poste, student = en formation, unemployed = au chômage, self-employed = indépendant
+  },
+  currentJob: {
+    type: String,
+    trim: true
+  },
+  currentJobFeeling: {
+    type: String,
+    enum: ['love', 'like', 'neutral', 'dislike', 'hate', 'burnout'],
+    // love = adore mon métier, like = satisfait, neutral = ni bien ni mal,
+    // dislike = insatisfait, hate = déteste, burnout = épuisé/en souffrance
+  },
+  education: {
+    type: String,
+    enum: ['middle_school', 'high_school', 'bac', 'bac_plus_2', 'bac_plus_3', 'bac_plus_5', 'phd', 'other'],
+    // middle_school = collège, high_school = lycée, bac = baccalauréat, bac_plus_2 = BTS/DUT,
+    // bac_plus_3 = Licence, bac_plus_5 = Master, phd = Doctorat
+  },
+  recommendedJob: {
+    type: String,
+    trim: true
+  },
   traitVector: {
     type: Map,
     of: Number,

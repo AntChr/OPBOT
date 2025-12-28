@@ -17,5 +17,6 @@ router.put('/scoring', authenticateToken, authController.updateScoring);
 // Admin/Debug routes
 router.get('/users', authenticateToken, adminAuth, authController.getAllUsers);
 router.patch('/users/:userId/admin', authenticateToken, adminAuth, authController.promoteToAdmin);
+router.post('/impersonate/:userId', authenticateToken, adminAuth, authController.impersonate);
 
 module.exports = router;

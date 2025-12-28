@@ -312,6 +312,39 @@ const authController = {
         message: 'Erreur serveur lors de la réinitialisation du mot de passe'
       });
     }
+  },
+
+  // Impersonate user (admin only)
+  impersonate: async (req, res) => {
+    try {
+      const { userId } = req.params;
+
+      // Find target user
+      const targetUser = await User.findById(userId);
+      if (!targetUser) {
+        return res.status(404).json({
+          success: false,
+          message: 'Utilisateur non trouvé'
+        });
+      }
+
+      // Generate token for the target user
+      const token = generateToken(targetUser._id);
+
+      res.json({
+        success: true,
+        message: `Connecté en tant que ${targetUser.firstName} ${targetUser.lastName}`,
+        token,
+        user: targetUser
+      });
+
+    } catch (error) {
+      console.error('Impersonate error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Erreur serveur lors de la connexion'
+      });
+    }
   }
 };
 

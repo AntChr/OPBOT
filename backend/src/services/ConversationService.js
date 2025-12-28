@@ -475,6 +475,17 @@ class ConversationService {
               if (autoConfirm) {
                 console.log(`   ✅ Auto-confirmé (needsConfirmation: false)`);
               }
+
+              // Sauvegarder le métier recommandé dans le profil utilisateur
+              if (detected.jobTitle) {
+                await User.findByIdAndUpdate(
+                  conversation.userId,
+                  { $set: { recommendedJob: detected.jobTitle } },
+                  { new: true }
+                );
+                console.log(`   ✅ Métier recommandé sauvegardé dans le profil utilisateur`);
+              }
+
               newMilestonesCount++;
             } else if (confidence !== current.confidence) {
               console.log(`   🔄 Milestone 5: Confiance mise à jour: ${current.confidence}% → ${confidence}%`);
@@ -775,6 +786,11 @@ class ConversationService {
             await this.updateProfileFromClaudeInsights(conversation, claudeResponse.extractedInsights);
           }
 
+          // Sauvegarder les données de profil utilisateur (âge, lieu, situation)
+          if (claudeResponse.profileData) {
+            await this.updateUserProfileData(conversation.userId, claudeResponse.profileData);
+          }
+
           return {
             id: uuidv4(),
             role: 'assistant',
@@ -910,6 +926,83 @@ class ConversationService {
 
     } catch (error) {
       console.error('❌ Erreur lors de la mise à jour du profil depuis Claude:', error);
+    }
+  }
+
+  /**
+   * Mettre à jour les données de profil utilisateur (âge, lieu, situation)
+   */
+  async updateUserProfileData(userId, profileData) {
+    try {
+      if (!profileData || Object.keys(profileData).length === 0) return;
+
+      const updateFields = {};
+
+      // Âge
+      if (profileData.age && typeof profileData.age === 'number') {
+        updateFields.age = profileData.age;
+        console.log(`  👤 Âge détecté: ${profileData.age} ans`);
+      }
+
+      // Localisation
+      if (profileData.location && typeof profileData.location === 'string') {
+        updateFields.location = profileData.location.trim();
+        console.log(`  📍 Localisation détectée: ${profileData.location}`);
+      }
+
+      // Situation actuelle
+      if (profileData.currentSituation && typeof profileData.currentSituation === 'string') {
+        const validSituations = ['employed', 'student', 'unemployed', 'self-employed', 'other'];
+        if (validSituations.includes(profileData.currentSituation)) {
+          updateFields.currentSituation = profileData.currentSituation;
+          console.log(`  💼 Situation détectée: ${profileData.currentSituation}`);
+        }
+      }
+
+      // Métier actuel (si en poste)
+      if (profileData.currentJob && typeof profileData.currentJob === 'string') {
+        updateFields.currentJob = profileData.currentJob.trim();
+        console.log(`  🏢 Métier actuel détecté: ${profileData.currentJob}`);
+      }
+
+      // Ressenti métier actuel (si en poste)
+      if (profileData.currentJobFeeling && typeof profileData.currentJobFeeling === 'string') {
+        const validFeelings = ['love', 'like', 'neutral', 'dislike', 'hate', 'burnout'];
+        if (validFeelings.includes(profileData.currentJobFeeling)) {
+          updateFields.currentJobFeeling = profileData.currentJobFeeling;
+          const emojis = {
+            love: '😍',
+            like: '😊',
+            neutral: '😐',
+            dislike: '😕',
+            hate: '😠',
+            burnout: '😰'
+          };
+          console.log(`  ${emojis[profileData.currentJobFeeling]} Ressenti métier détecté: ${profileData.currentJobFeeling}`);
+        }
+      }
+
+      // Niveau d'études
+      if (profileData.education && typeof profileData.education === 'string') {
+        const validEducation = ['middle_school', 'high_school', 'bac', 'bac_plus_2', 'bac_plus_3', 'bac_plus_5', 'phd', 'other'];
+        if (validEducation.includes(profileData.education)) {
+          updateFields.education = profileData.education;
+          console.log(`  🎓 Niveau d'études détecté: ${profileData.education}`);
+        }
+      }
+
+      // Mettre à jour le user si on a des données
+      if (Object.keys(updateFields).length > 0) {
+        await User.findByIdAndUpdate(
+          userId,
+          { $set: updateFields },
+          { new: true }
+        );
+        console.log(`  ✅ Profil utilisateur mis à jour`);
+      }
+
+    } catch (error) {
+      console.error('❌ Erreur lors de la mise à jour du profil utilisateur:', error);
     }
   }
 
