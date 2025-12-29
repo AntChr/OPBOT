@@ -133,6 +133,126 @@ router.post('/generate', authenticateToken, async (req, res) => {
 });
 
 /**
+ * POST /api/trainings/generate-groq
+ * Déclenche la génération d'une formation personnalisée avec Groq (RAPIDE)
+ * (Ce endpoint déclenche le workflow n8n optimisé avec Groq)
+ *
+ * Body: { userId, careerId, targetJob, constraints, skillsAssessmentId }
+ *
+ * Authentification requise
+ */
+router.post('/generate-groq', authenticateToken, async (req, res) => {
+  try {
+    const { userId, careerId, targetJob, constraints, skillsAssessmentId } = req.body;
+
+    // Vérifier que l'utilisateur génère sa propre formation (sauf admin)
+    if (req.user._id.toString() !== userId && req.user.role !== 'admin') {
+      return res.status(403).json({
+        success: false,
+        error: 'Accès non autorisé'
+      });
+    }
+
+    // Vérifier qu'il n'y a pas déjà une formation active
+    const existingTraining = await Training.findActiveTraining(userId);
+
+    if (existingTraining) {
+      // Si la formation existante a échoué, on la supprime pour permettre une nouvelle génération
+      if (existingTraining.status === 'generation_failed') {
+        console.log('🗑️ Suppression formation échouée:', existingTraining._id);
+        await Training.findByIdAndDelete(existingTraining._id);
+      }
+      // Si la formation est en cours de génération depuis plus de 10 minutes, c'est probablement bloqué
+      else if (existingTraining.status === 'generating') {
+        const createdAt = new Date(existingTraining.createdAt);
+        const now = new Date();
+        const minutesElapsed = (now - createdAt) / 1000 / 60;
+
+        if (minutesElapsed > 10) {
+          console.log('🗑️ Suppression formation bloquée (génération > 10 min):', existingTraining._id);
+          await Training.findByIdAndDelete(existingTraining._id);
+        } else {
+          return res.status(400).json({
+            success: false,
+            error: `Une formation est déjà en cours de génération (démarrée il y a ${Math.round(minutesElapsed)} min). Veuillez patienter ou réessayer dans ${Math.round(10 - minutesElapsed)} min.`,
+            trainingId: existingTraining._id
+          });
+        }
+      }
+      // Formation active, ne pas supprimer
+      else {
+        return res.status(400).json({
+          success: false,
+          error: 'Une formation est déjà active. Terminez-la avant d\'en créer une nouvelle.',
+          trainingId: existingTraining._id
+        });
+      }
+    }
+
+    // Créer un placeholder de formation en statut "generating"
+    const training = new Training({
+      userId,
+      careerId,
+      targetJob,
+      entryLevel: 'beginner', // sera mis à jour par n8n
+      trainingObjective: 'En cours de génération avec Groq (optimisé)...',
+      userConstraints: constraints || {},
+      status: 'generating',
+      skillsAssessmentId: skillsAssessmentId || null
+    });
+
+    await training.save();
+
+    // Déclencher le workflow n8n Groq
+    const n8nWebhookUrl = process.env.N8N_TRAINING_GENERATE_GROQ_WEBHOOK_URL;
+
+    if (n8nWebhookUrl) {
+      try {
+        console.log('🚀 Déclenchement workflow Groq pour:', training._id);
+
+        await axios.post(n8nWebhookUrl, {
+          trainingId: training._id.toString(),
+          userId: userId,
+          targetJob: targetJob,
+          skillsAssessmentId: skillsAssessmentId || null
+        }, {
+          timeout: 30000 // 30 secondes timeout
+        });
+
+        console.log('✅ Webhook n8n Groq déclenché:', training._id);
+      } catch (webhookError) {
+        console.error('❌ Erreur webhook n8n Groq:', webhookError.message);
+
+        // Si c'est un timeout, c'est probablement que n8n est en train de traiter
+        if (webhookError.code === 'ECONNABORTED' || webhookError.code === 'ETIMEDOUT') {
+          console.log('⏳ Timeout webhook Groq - n8n est probablement en cours de traitement');
+        } else {
+          // Vraie erreur (réseau, 404, etc.)
+          training.status = 'generation_failed';
+          await training.save();
+        }
+      }
+    } else {
+      console.warn('⚠️ N8N_TRAINING_GENERATE_GROQ_WEBHOOK_URL non configuré');
+    }
+
+    res.status(201).json({
+      success: true,
+      message: 'Génération de la formation en cours (workflow Groq optimisé)',
+      trainingId: training._id,
+      status: training.status
+    });
+
+  } catch (error) {
+    console.error('Erreur POST /api/trainings/generate-groq:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+/**
  * POST /api/trainings/save-from-n8n
  * Sauvegarde la formation générée par n8n
  *

@@ -50,7 +50,7 @@ export const API_ENDPOINTS = {
 
   // Training (Formation personnalisée)
   TRAINING_GET: (userId) => `${API_URL}/api/trainings/${userId}`,
-  TRAINING_GENERATE: `${API_URL}/api/trainings/generate`,
+  TRAINING_GENERATE: `${API_URL}/api/trainings/generate-groq`,
   TRAINING_MODULE_DETAIL: (trainingId, moduleNumber) => `${API_URL}/api/trainings/module/${trainingId}/${moduleNumber}`,
   TRAINING_LESSON_COMPLETE: (trainingId) => `${API_URL}/api/trainings/lesson/${trainingId}/complete`,
   TRAINING_MODULE_COMPLETE: (trainingId) => `${API_URL}/api/trainings/module/${trainingId}/complete`,

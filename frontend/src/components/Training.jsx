@@ -42,6 +42,17 @@ function Training({ onBackToQuiz, user }) {
         }
       })
 
+      console.log('📚 Training récupérée:', {
+        targetJob: response.data.training.targetJob,
+        status: response.data.training.status,
+        modulesCount: response.data.training.modules?.length,
+        modules: response.data.training.modules?.map(m => ({
+          num: m.moduleNumber,
+          title: m.title,
+          status: m.status
+        }))
+      })
+
       setTraining(response.data.training)
 
       // Si la formation est en cours de génération, démarrer le polling
