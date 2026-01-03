@@ -10,7 +10,7 @@ const miniExerciseSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['open', 'mcq', 'practical', 'reflection'],
+    enum: ['open', 'mcq', 'practical', 'reflection', 'decision', 'prioritization', 'reformulation'],
     default: 'open'
   },
   expectedOutcome: {
@@ -49,9 +49,31 @@ const lessonSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  // Nouvelle structure orientée ACTION (5 points)
+  situation: {
+    type: String,
+    default: ''
+  },
+  responsibilities: {
+    type: String,
+    default: ''
+  },
+  commonMistake: {
+    type: String,
+    default: ''
+  },
+  bestPractice: {
+    type: String,
+    default: ''
+  },
+  application: {
+    type: String,
+    default: ''
+  },
+  // Anciens champs (rétrocompatibilité) - plus requis avec nouvelle structure
   keyConcept: {
     type: String,
-    required: true
+    default: ''
   },
   context: {
     type: String,
@@ -59,7 +81,8 @@ const lessonSchema = new mongoose.Schema({
   },
   content: {
     type: String,
-    required: true
+    default: '',
+    required: false
   },
   miniExercise: {
     type: miniExerciseSchema,
@@ -185,6 +208,10 @@ const moduleSchema = new mongoose.Schema({
     url: String,
     description: String
   }],
+  aiCoachingNotes: {
+    type: String,
+    default: ''
+  },
   status: {
     type: String,
     enum: ['locked', 'available', 'in_progress', 'completed'],

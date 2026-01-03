@@ -317,7 +317,7 @@ router.post('/save-from-n8n', async (req, res) => {
                               (module.module_exercise || module.moduleExercise).evaluationCriteria || []
         } : null,
         resources: module.resources || [],
-        status: index === 0 ? 'available' : 'locked' // Premier module débloqué
+        status: 'available' // Tous les modules débloqués pour consultation
       }));
     }
 
